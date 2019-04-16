@@ -388,7 +388,7 @@ MODULE_PARM_DESC(force_filter_mode, "force_filter_mode");
 module_param(force_filter_mode, int, 0664);
 #endif
 /*temp disable sr for power test*/
-bool super_scaler = true;
+bool super_scaler = false;
 static unsigned int sr_support;
 static u32 sr_reg_offt;
 static u32 sr_reg_offt2;	/*for tl1*/
@@ -3226,5 +3226,3 @@ void vpp_bypass_ratio_config(void)
 	else
 		bypass_ratio = 205;
 }
-
-
