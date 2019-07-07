@@ -5111,7 +5111,7 @@ static  int __init hdmitx_boot_para_setup(char *s)
 				&& (strncmp(token, "off", token_len) == 0)) {
 				init_flag |= INIT_FLAG_NOT_LOAD;
 			}
-			check_hdmiuboot_attr(token);
+			/*check_hdmiuboot_attr(token); /**/
 		}
 		offset = token_offset;
 	} while (token);
