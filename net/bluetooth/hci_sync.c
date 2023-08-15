@@ -6436,8 +6436,14 @@ static void set_ext_conn_params(struct hci_conn *conn,
 	p->scan_window = cpu_to_le16(hdev->le_scan_window_connect);
 	p->conn_interval_min = cpu_to_le16(conn->le_conn_min_interval);
 	p->conn_interval_max = cpu_to_le16(conn->le_conn_max_interval);
+#if IS_ENABLED(CONFIG_AMLOGIC_LINUX_BT)
+	// Specify the same create connection parameters as for Android
+	p->conn_latency = 0;
+	p->supervision_timeout = 500;	// 5S
+#else
 	p->conn_latency = cpu_to_le16(conn->le_conn_latency);
 	p->supervision_timeout = cpu_to_le16(conn->le_supv_timeout);
+#endif
 	p->min_ce_len = cpu_to_le16(0x0000);
 	p->max_ce_len = cpu_to_le16(0x0000);
 }
@@ -6579,8 +6585,14 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
 	cp.own_address_type = own_addr_type;
 	cp.conn_interval_min = cpu_to_le16(conn->le_conn_min_interval);
 	cp.conn_interval_max = cpu_to_le16(conn->le_conn_max_interval);
+#if IS_ENABLED(CONFIG_AMLOGIC_LINUX_BT)
+	// Specify the same create connection parameters as for Android
+	cp.conn_latency = 0;
+	cp.supervision_timeout = 500;  // 5S
+#else
 	cp.conn_latency = cpu_to_le16(conn->le_conn_latency);
 	cp.supervision_timeout = cpu_to_le16(conn->le_supv_timeout);
+#endif
 	cp.min_ce_len = cpu_to_le16(0x0000);
 	cp.max_ce_len = cpu_to_le16(0x0000);
 
