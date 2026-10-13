@@ -1106,7 +1106,8 @@ KBUILD_CFLAGS	+= -Wno-tautological-compare \
 		   -Wno-return-type \
 		   -Wno-uninitialized \
 		   -Wno-format \
-		   -Wno-unused-variable
+		   -Wno-unused-variable \
+		   -Wno-unused-function
 
 # scripts/Makefile.gcc-plugins is intentionally included last.
 # Do not add $(call cc-option,...) below this line. When you build the kernel
