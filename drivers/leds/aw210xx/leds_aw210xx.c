@@ -1008,7 +1008,7 @@ static int aw210xx_parse_dt(struct device *dev, struct aw210xx *aw210xx, struct 
  * i2c driver
  *
  ******************************************************/
-static int aw210xx_i2c_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
+static int aw210xx_i2c_probe(struct i2c_client *i2c)
 {
 	struct aw210xx *aw210xx;
 	struct device_node *np = i2c->dev.of_node;
@@ -1068,7 +1068,6 @@ static int aw210xx_i2c_probe(struct i2c_client *i2c, const struct i2c_device_id 
 
 err_sysfs:
 err_id:
-	devm_gpio_free(&i2c->dev, aw210xx->enable_gpio);
 err_gpio_request:
 err_parse_dt:
 	devm_kfree(&i2c->dev, aw210xx);
@@ -1076,18 +1075,14 @@ err_parse_dt:
 	return ret;
 }
 
-static int aw210xx_i2c_remove(struct i2c_client *i2c)
+static void aw210xx_i2c_remove(struct i2c_client *i2c)
 {
 	struct aw210xx *aw210xx = i2c_get_clientdata(i2c);
 
 	sysfs_remove_group(&aw210xx->cdev.dev->kobj, &aw210xx_attribute_group);
 	led_classdev_unregister(&aw210xx->cdev);
-	if (gpio_is_valid(aw210xx->enable_gpio))
-		devm_gpio_free(&i2c->dev, aw210xx->enable_gpio);
 	devm_kfree(&i2c->dev, aw210xx);
 	aw210xx = NULL;
-
-	return 0;
 }
 
 static int aw210xx_suspend(struct device *dev)
