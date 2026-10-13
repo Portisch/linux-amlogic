@@ -1110,7 +1110,8 @@ KBUILD_CFLAGS	+= -Wno-tautological-compare \
 		   -Wno-unused-function \
 		   -Wno-unused-label \
 		   -Wno-bitwise-conditional-parentheses \
-		   -Wno-misleading-indentation
+		   -Wno-misleading-indentation \
+		   -Wno-vla
 
 # scripts/Makefile.gcc-plugins is intentionally included last.
 # Do not add $(call cc-option,...) below this line. When you build the kernel
