@@ -216,12 +216,12 @@ static void meson_ir_hw_handler(struct meson_ir *ir)
 static irqreturn_t meson_ir_irq(int irqno, void *dev_id)
 {
 	struct meson_ir *ir = dev_id;
+	u32 status;
 
 	spin_lock(&ir->lock);
 
-	ir_raw_event_store_edge(ir->rc,
-		(readl(ir->reg + IR_DEC_STATUS) & STATUS_IR_DEC_IN)
-		? true : false);
+	regmap_read(ir->reg, IR_DEC_STATUS, &status);
+	ir_raw_event_store_edge(ir->rc, !!(status & IR_DEC_STATUS_PULSE));
 
 	mod_timer(&ir->flush_timer,
 		jiffies + usecs_to_jiffies(ir->rc->timeout));
