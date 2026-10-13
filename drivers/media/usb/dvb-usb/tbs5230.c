@@ -167,7 +167,7 @@ static int tbs5230_frontend_attach(struct dvb_usb_adapter*adap)
 	if(adap->fe_adap[0].fe == NULL)
 		return -ENODEV;
 
-	strlcpy(adap->fe_adap[0].fe->ops.info.name,d->props.devices[0].name,52);
+	strscpy(adap->fe_adap[0].fe->ops.info.name,d->props.devices[0].name,52);
 	return 0;		
 }
 
