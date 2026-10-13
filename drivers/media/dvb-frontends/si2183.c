@@ -345,7 +345,7 @@ static int si2183_read_status(struct dvb_frontend *fe, enum fe_status *status)
 			c->modulation = APSK_16;
 			break;
 			case 0x17:
-			c->modulation = APSK_8L;
+			c->modulation = APSK_8_L;
 			break;
 			case 0x18:
 			c->modulation = APSK_16_L;
@@ -1655,8 +1655,7 @@ static struct si_base *match_base(struct i2c_adapter *i2c, u8 adr)
 	return NULL;
 }
 
-static int si2183_probe(struct i2c_client *client,
-		const struct i2c_device_id *id)
+static int si2183_probe(struct i2c_client *client)
 {
 	struct si2183_config *config = client->dev.platform_data;
 	struct si2183_dev *dev;
@@ -1698,7 +1697,7 @@ static int si2183_probe(struct i2c_client *client,
 			goto err_base_kfree;
 		}
 		base->muxc->priv = client;
-		ret = i2c_mux_add_adapter(base->muxc, 0, 0, 0);
+		ret = i2c_mux_add_adapter(base->muxc, 0, 0);
 		if (ret)
 			goto err_base_kfree;
 		base->tuner_adapter = base->muxc->adapter[0];
@@ -1759,7 +1758,7 @@ err:
 	return ret;
 }
 
-static int si2183_remove(struct i2c_client *client)
+static void si2183_remove(struct i2c_client *client)
 {
 	struct si2183_dev *dev = i2c_get_clientdata(client);
 
@@ -1782,8 +1781,6 @@ static int si2183_remove(struct i2c_client *client)
 	dev->fe.demodulator_priv = NULL;
 
 	kfree(dev);
-
-	return 0;
 }
 
 static const struct i2c_device_id si2183_id_table[] = {
