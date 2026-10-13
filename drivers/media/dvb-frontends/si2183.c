@@ -1439,48 +1439,6 @@ static enum dvbfe_algo si2183_get_algo(struct dvb_frontend *fe)
 	return DVBFE_ALGO_HW;
 }
 
-static int si2183_set_property(struct dvb_frontend *fe,
-		struct dtv_property *tvp)
-{
-	int ret = 0;
-
-	switch (tvp->cmd) {
-	case DTV_DELIVERY_SYSTEM:
-		switch (tvp->u.data) {
-		case SYS_DVBS:
-		case SYS_DVBS2:
-		case SYS_DSS:
-			fe->ops.info.frequency_min_hz = 950 * MHz;
-			fe->ops.info.frequency_max_hz = 2150 * MHz;
-			fe->ops.info.frequency_stepsize_hz = 0;
-			break;
-		case SYS_ISDBT:
-			fe->ops.info.frequency_min_hz = 42 * MHz;
-			fe->ops.info.frequency_max_hz = 1002 * MHz;
-			fe->ops.info.frequency_stepsize_hz = 0;
-			break;
-		case SYS_DVBC_ANNEX_A:
-		case SYS_DVBC_ANNEX_B:
-			fe->ops.info.frequency_min_hz = 47 * MHz;
-			fe->ops.info.frequency_max_hz = 862 * MHz;
-			fe->ops.info.frequency_stepsize_hz = 62500;
-			break;
-		case SYS_DVBT:
-		case SYS_DVBT2:
-		default:
-			fe->ops.info.frequency_min_hz = 174 * MHz;
-			fe->ops.info.frequency_max_hz = 862 * MHz;
-			fe->ops.info.frequency_stepsize_hz = 250000;
-			break;
-		}
-		break;
-	default:
-		break;
-	}
-
-	return ret;
-}
-
 
 static int send_diseqc_cmd(struct dvb_frontend *fe,
 	u8 cont_tone, u8 tone_burst, u8 burst_sel,
@@ -1672,7 +1630,6 @@ static const struct dvb_frontend_ops si2183_ops = {
 	.get_frontend_algo = si2183_get_algo,
 	.tune = si2183_tune,
 
-	.set_property		= si2183_set_property,
 
 	.set_tone			= si2183_set_tone,
 	.diseqc_send_burst	= si2183_diseqc_send_burst,
